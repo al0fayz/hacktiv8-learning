@@ -6,11 +6,12 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 )
 
 type Biodata struct {
-	Id        int64
+	Id        int
 	Nama      string
 	Alamat    string
 	Pekerjaan string
@@ -28,20 +29,33 @@ func Assignment1() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		//search by nama
-		for i := 0; i < len(students); i++ {
-			if strings.Contains(students[i].Nama, arg[1]) {
-				fmt.Println("ID :", students[i].Id)
-				fmt.Println("Nama :", students[i].Nama)
-				fmt.Println("Alamat :", students[i].Alamat)
-				fmt.Println("Pekerjaan :", students[i].Pekerjaan)
-				fmt.Println("Alasan :", students[i].Alasan)
-				break
+		//check argument number or string
+		if intArgs, err := strconv.Atoi(arg[1]); err == nil {
+			//check by number or id
+			for i := 0; i < len(students); i++ {
+				if students[i].Id == intArgs {
+					fmt.Println("ID :", students[i].Id)
+					fmt.Println("Nama :", students[i].Nama)
+					fmt.Println("Alamat :", students[i].Alamat)
+					fmt.Println("Pekerjaan :", students[i].Pekerjaan)
+					fmt.Println("Alasan :", students[i].Alasan)
+					break
+				}
+			}
+		} else {
+			//search by nama
+			for i := 0; i < len(students); i++ {
+				if strings.Contains(students[i].Nama, arg[1]) {
+					fmt.Println("ID :", students[i].Id)
+					fmt.Println("Nama :", students[i].Nama)
+					fmt.Println("Alamat :", students[i].Alamat)
+					fmt.Println("Pekerjaan :", students[i].Pekerjaan)
+					fmt.Println("Alasan :", students[i].Alasan)
+					break
+				}
 			}
 		}
-
 	}
-
 }
 
 //function openfile dummy data
