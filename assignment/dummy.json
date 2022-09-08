@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "nama": "Thomas",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "UI/UX Designer",
+        "alasan": "Mencoba Belajar bahasa Golang"
+    },
+    {
+        "id": 2,
+        "nama": "Adi Sucipto",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "Quality Ansurance",
+        "alasan": "Mencoba Belajar bahasa Golang Untuk Qa/Qc lebih baik"
+    },
+    {
+        "id": 3,
+        "nama": "Ahmad Ropai",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "Fullstack Developer",
+        "alasan": "Ingin membuat epp server menggunakan golang"
+    },
+    {
+        "id": 4,
+        "nama": "Dzaki",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "Frontend Developer",
+        "alasan": "Membuat frontend dengan Golang"
+    },
+    {
+        "id": 5,
+        "nama": "Muhamad Halim",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "IT Security",
+        "alasan": "Belajar golang untuk menambah wawasan tentang security jika aplikasi di buat menggunakan golang"
+    },
+    {
+        "id": 6,
+        "nama": "Arvianti",
+        "alamat": "Tangerang Selatan",
+        "pekerjaan": "Backend Developer",
+        "alasan": "Mencoba Belajar bahasa Golang Untuk tambah pengalaman"
+    }
+]
