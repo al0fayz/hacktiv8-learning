@@ -58,7 +58,7 @@ func Assignment1() {
 	}
 }
 
-//function openfile dummy data
+// function openfile dummy data
 func OpenAndReadFile() ([]Biodata, error) {
 	//open dummy file
 	rootPath, err := os.Getwd()
