@@ -62,7 +62,39 @@ func DetailOrder(c *gin.Context) {
 	})
 }
 func UpdateOrder(c *gin.Context) {
-
+	id := c.Params.ByName("id")
+	//search order
+	_, err := model.DetailOrder(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"success": false,
+			"message": "Order not found",
+		})
+		return
+	}
+	//update order
+	var update request.OrderUpdate
+	err = c.ShouldBindJSON(&update)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"error":   err.Error(),
+		})
+		return
+	}
+	err = model.UpdateOrder(&update)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"error":   err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    nil,
+		"message": "Update data success",
+	})
 }
 func DeleteOrder(c *gin.Context) {
 	id := c.Params.ByName("id")

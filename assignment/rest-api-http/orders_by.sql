@@ -21,20 +21,20 @@
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `item_code` char(1) DEFAULT NULL,
-  `description` char(1) DEFAULT NULL,
+  `item_code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quantity` bigint DEFAULT NULL,
   `order_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `customer_name` char(1) DEFAULT NULL,
-  `ordered_at` date DEFAULT NULL,
+  `customer_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `ordered_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 

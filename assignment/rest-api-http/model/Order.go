@@ -1,9 +1,9 @@
 package model
 
 import (
-	"fmt"
 	"hacktiv8-learning/assignment/rest-api-http/config"
 	"hacktiv8-learning/assignment/rest-api-http/request"
+	"hacktiv8-learning/assignment/rest-api-http/utils"
 )
 
 type Order struct {
@@ -82,7 +82,6 @@ func CreateOrder(order *request.OrderCreate) error {
 	}
 	//save items
 	for _, item := range order.Items {
-		fmt.Println(item)
 		sqlItems := `INSERT INTO items (item_code, description, quantity, order_id) VALUES (?, ?, ?, ?)`
 		_, err := db.Exec(sqlItems, item.ItemCode, item.Description, item.Quantity, id)
 		if err != nil {
@@ -113,8 +112,35 @@ func DetailOrder(id string) (*Order, error) {
 			return nil, err
 		}
 		order.Items = items
+	} else {
+		return nil, utils.ShowError("Order not found")
 	}
 	return &order, nil
+}
+
+// update
+func UpdateOrder(order *request.OrderUpdate) error {
+	db := config.GetDb()
+	sqlQuery := `
+		UPDATE orders SET customer_name = ?, ordered_at = ?
+		WHERE id = ?
+		`
+	_, err := db.Exec(sqlQuery, order.CustomerName, order.OrderedAt, order.OrderId)
+	if err != nil {
+		return err
+	}
+	if err != nil {
+		return err
+	}
+	//save items
+	for _, item := range order.Items {
+		sqlItems := `UPDATE items SET item_code = ?, description = ?, quantity = ? WHERE id = ? AND order_id = ?`
+		_, err := db.Exec(sqlItems, item.ItemCode, item.Description, item.Quantity, item.ItemId, order.OrderId)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // delete
