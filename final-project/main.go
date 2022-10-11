@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"hacktiv8-learning/final-project/config"
+	"hacktiv8-learning/final-project/models"
 	"hacktiv8-learning/final-project/router"
 	"hacktiv8-learning/final-project/validators"
 	"log"
@@ -25,6 +26,9 @@ func main() {
 	if err != nil {
 		log.Fatal("Error when connect to DB!")
 	}
+	//migrate table
+	go AutoMigrate()
+
 	//init validator
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("emailExist", validators.EmailExist)
@@ -48,4 +52,33 @@ func main() {
 	//
 	err = app.ListenAndServe()
 	fmt.Println(err.Error())
+}
+
+func AutoMigrate() {
+	//migrate table
+	db := config.GetDb()
+	userExist := db.Migrator().HasTable(&models.User{})
+	if !userExist {
+		// Create table for `User`
+		db.Migrator().CreateTable(&models.User{})
+		fmt.Println("table users created")
+	}
+	socialExist := db.Migrator().HasTable(&models.SocialMedia{})
+	if !socialExist {
+		// Create table for `SocialMedia`
+		db.Migrator().CreateTable(&models.SocialMedia{})
+		fmt.Println("table socialmedia created")
+	}
+	photoExist := db.Migrator().HasTable(&models.Photo{})
+	if !photoExist {
+		// Create table for `Photo`
+		db.Migrator().CreateTable(&models.Photo{})
+		fmt.Println("table photo created")
+	}
+	commentExist := db.Migrator().HasTable(&models.Comment{})
+	if !commentExist {
+		// Create table for `Comment`
+		db.Migrator().CreateTable(&models.Comment{})
+		fmt.Println("table comment created")
+	}
 }

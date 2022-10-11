@@ -6,10 +6,10 @@ import (
 )
 
 type User struct {
-	Id        int64     `json:"id"`
-	Username  string    `json:"username"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
+	Id        int64     `json:"id" gorm:"primaryKey;autoIncrement"`
+	Username  string    `json:"username" gorm:"not null;uniqe;type:varchar(191)"`
+	Email     string    `json:"email" gorm:"not null;uniqe;type:varchar(191)"`
+	Password  string    `json:"password" gorm:"not null;type:varchar(191)"`
 	Age       int32     `json:"age"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
