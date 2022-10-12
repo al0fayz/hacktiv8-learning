@@ -46,3 +46,16 @@ func CreateUser(user *User) error {
 	err := db.Create(user).Error
 	return err
 }
+func UpdateUser(user *User) error {
+	user.UpdatedAt = time.Now()
+	db := config.GetDb()
+	err := db.Model(&User{}).Where("id = ?", user.Id).Updates(user).Error
+	return err
+}
+
+func DeleteUser(id string) error {
+	db := config.GetDb()
+	var model User
+	err := db.Where("id = ?", id).Delete(&model).Error
+	return err
+}

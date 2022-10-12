@@ -51,12 +51,8 @@ func ValidationErrorToText(errValidation validator.FieldError) string {
 		return "Username already taken"
 	case "eqfield":
 		return fmt.Sprintf("%s must same with %s", name, errValidation.Param())
-	case "nameRules":
-		return "Format only alpha and space"
-	case "addressRules":
-		return "Format only alpha, numeric, space, _, - and ."
-	case "isDomain":
-		return "Format Domain is invalid"
+	case "gte":
+		return fmt.Sprintf("%s must Greather than or equal %s", name, errValidation.Param())
 	default:
 		return fmt.Sprintf("%s is not valid input", name)
 	}

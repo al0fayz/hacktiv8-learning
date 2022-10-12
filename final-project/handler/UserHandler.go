@@ -2,6 +2,8 @@ package handler
 
 import (
 	"errors"
+	"fmt"
+	"hacktiv8-learning/final-project/midlleware"
 	"hacktiv8-learning/final-project/models"
 	"hacktiv8-learning/final-project/rules"
 	"hacktiv8-learning/final-project/validators"
@@ -11,8 +13,8 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func RegisterHadnler(c *gin.Context) {
-	req := rules.UserCreateValidator()
+func UpdateUser(c *gin.Context) {
+	req := rules.UserUpdateValidator()
 	if err := req.Bind(c); err != nil {
 		var errValidation validator.ValidationErrors
 		if errors.As(err, &errValidation) {
@@ -31,14 +33,18 @@ func RegisterHadnler(c *gin.Context) {
 			return
 		}
 	} else {
-		user := models.User{
-			Username: req.Username,
-			Email:    req.Email,
-			Password: req.Password,
-			Age:      req.Age,
+		user, err := models.FindUserByEmail(req.Email)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code":     http.StatusBadRequest,
+				"errors":   err.Error(),
+				"messages": "Bad Request",
+			})
+			return
 		}
-		//create user
-		err := models.CreateUser(&user)
+		//update user
+		user.Username = req.Username
+		err = models.UpdateUser(&user)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"code":     http.StatusBadRequest,
@@ -48,11 +54,38 @@ func RegisterHadnler(c *gin.Context) {
 			return
 		}
 		//success
-		c.JSON(http.StatusCreated, gin.H{
-			"id":       user.Id,
-			"username": user.Username,
-			"email":    user.Email,
-			"age":      user.Age,
+		c.JSON(http.StatusOK, gin.H{
+			"id":         user.Id,
+			"username":   user.Username,
+			"email":      user.Email,
+			"age":        user.Age,
+			"updated_at": user.UpdatedAt,
 		})
 	}
+}
+
+func DeleteUser(c *gin.Context) {
+	//get id from jwt
+	user_id, err := midlleware.ExtractTokenID(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":     http.StatusInternalServerError,
+			"errors":   err.Error(),
+			"messages": "Internal Server Error",
+		})
+		return
+	}
+	//delete on db
+	err = models.DeleteUser(fmt.Sprint(user_id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":     http.StatusInternalServerError,
+			"errors":   err.Error(),
+			"messages": "Internal Server Error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"messages": "Your account has been successfuly deleted",
+	})
 }
