@@ -2,7 +2,10 @@ package models
 
 import (
 	"hacktiv8-learning/final-project/config"
+	"hacktiv8-learning/final-project/utils"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -15,6 +18,14 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+	hash, err := utils.GenerateHash(u.Password)
+	if err != nil {
+		return err
+	}
+	u.Password = hash
+	return nil
+}
 func FindUserByEmail(email string) (User, error) {
 	db := config.GetDb()
 	var model User
@@ -26,4 +37,12 @@ func FindUserByUsername(username string) (User, error) {
 	var model User
 	err := db.Where("username = ?", username).First(&model).Error
 	return model, err
+}
+
+func CreateUser(user *User) error {
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+	db := config.GetDb()
+	err := db.Create(user).Error
+	return err
 }
