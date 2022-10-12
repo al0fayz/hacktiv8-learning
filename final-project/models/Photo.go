@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Photo struct {
@@ -32,7 +33,29 @@ func GetAllPhotoByUserId(photo *[]Photo, c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	err = db.Model(&Photo{}).Preload("User").Where("user_id = ?", user_id).Find(photo).Error
+	err = db.Model(&Photo{}).Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("Id,Email,Username")
+	}).Where("user_id = ?", user_id).Find(photo).Error
 
+	return err
+}
+func FindPhotoById(id string) (Photo, error) {
+	db := config.GetDb()
+	var model Photo
+	err := db.Where("id = ?", id).First(&model).Error
+	return model, err
+}
+
+func UpdatePhoto(photo *Photo) error {
+	photo.UpdatedAt = time.Now()
+	db := config.GetDb()
+	err := db.Model(&Photo{}).Where("id = ?", photo.Id).Updates(photo).Error
+	return err
+}
+
+func DeletePhoto(id string) error {
+	db := config.GetDb()
+	var model Photo
+	err := db.Where("id = ?", id).Delete(&model).Error
 	return err
 }
