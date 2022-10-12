@@ -23,6 +23,9 @@ func InitRouter() *gin.Engine {
 		api.Use(midlleware.InitUserMiddleware())
 		api.PUT("/users", handler.UpdateUser)
 		api.DELETE("/users", handler.DeleteUser)
+		//photo
+		api.POST("/photos", handler.CreatePhoto)
+		api.GET("/photos", handler.GetAllPhoto)
 	}
 	return router
 }
