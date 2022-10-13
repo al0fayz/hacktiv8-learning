@@ -29,6 +29,11 @@ func InitRouter() *gin.Engine {
 		api.GET("/photos/:id", handler.GetPhotoById)
 		api.PUT("/photos/:id", handler.UpdatePhoto)
 		api.DELETE("/photos/:id", handler.DeletePhoto)
+		//comments
+		api.POST("/comments", handler.CreateComment)
+		api.GET("/comments", handler.GetAllComment)
+		api.PUT("/comments/:id", handler.UpdateComment)
+		api.DELETE("/comments/:id", handler.DeleteComment)
 	}
 	return router
 }

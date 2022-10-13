@@ -34,7 +34,7 @@ func (user *UserUpdate) Bind(c *gin.Context) error {
 	return err
 }
 
-// create
+// update
 func UserUpdateValidator() UserUpdate {
 	ret := UserUpdate{}
 	return ret
