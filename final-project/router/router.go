@@ -34,6 +34,11 @@ func InitRouter() *gin.Engine {
 		api.GET("/comments", handler.GetAllComment)
 		api.PUT("/comments/:id", handler.UpdateComment)
 		api.DELETE("/comments/:id", handler.DeleteComment)
+		//socialmedia
+		api.POST("/socialmedias", handler.CreateSocialMedia)
+		api.GET("/socialmedias", handler.GetALlSocialMedia)
+		api.PUT("/socialmedias/:id", handler.UpdateSocialMedia)
+		api.DELETE("/socialmedias/:id", handler.DeleteSocialMedia)
 	}
 	return router
 }

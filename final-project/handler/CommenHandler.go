@@ -146,7 +146,7 @@ func UpdateComment(c *gin.Context) {
 	}
 }
 func DeleteComment(c *gin.Context) {
-	//search photo is exist
+	//search comment is exist
 	id := c.Params.ByName("id")
 	_, err := models.FindCommentById(id)
 	if err != nil {
